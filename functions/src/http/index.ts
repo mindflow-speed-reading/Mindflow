@@ -32,7 +32,6 @@ const app = express();
 
 // Automatically allow cross-origin requests
 app.use(cors({ origin: true }));
-app.use(cors({ origin: 'http://localhost:3000' }));
 
 // build multiple CRUD interfaces:
 app.post('/activateSoldLicense', activateSoldLicense);
