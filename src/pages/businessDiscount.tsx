@@ -62,12 +62,10 @@ export const BusinessDiscount: FC = () => {
     async (body: BusinessAprovalSubmit) => {
       setIsLoading(true);
 
-      // const resp = await Axios.post(`http://127.0.0.1:5001/mindflow-local/us-central1/api/createBusinessApproval`, body);
-
       const resp = await Axios.post(`${process.env.REACT_APP_CLOUD_FUNCTIONS_URL}/createBusinessApproval`, body);
 
       const { id } = resp.data;
-      
+
       const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
       const stripe = await stripePromise;
@@ -76,19 +74,18 @@ export const BusinessDiscount: FC = () => {
         product_name: 'Business single license',
         amount: 100,
         quantity: body.quantity,
-        // success_url: `http://localhost:3000/business-discount/callback/stripe/{CHECKOUT_SESSION_ID}/${id}`,
         success_url: `https://app.mindflowspeedreading.com/business-discount/callback/stripe/{CHECKOUT_SESSION_ID}/${id}`,
         cancel_url: 'https://app.mindflowspeedreading.com/business-discount'
       });
-        
+
       const session = response.data;
       const sessionId = session.id;
-  
-    
+
+
       const result = await stripe.redirectToCheckout({
         sessionId: sessionId,
       });
-  
+
       if (result.error) {
         console.error(result.error.message);
       }
@@ -112,12 +109,11 @@ export const BusinessDiscount: FC = () => {
     async (body: BusinessAprovalSubmit) => {
       setIsLoading(true);
 
-      // const resp = await Axios.post(`http://127.0.0.1:5001/mindflow-local/us-central1/api/createBusinessApproval`, body);
 
       const resp = await Axios.post(`${process.env.REACT_APP_CLOUD_FUNCTIONS_URL}/createBusinessApproval`, body);
 
       const { id } = resp.data;
-      
+
       // @ts-ignore
       window.CollectCheckout.redirectToCheckout({
         lineItems: [
@@ -129,7 +125,7 @@ export const BusinessDiscount: FC = () => {
         successUrl: `https://app.mindflowspeedreading.com/business-discount/callback/group_iso/{TRANSACTION_ID}/${id}`,
         cancelUrl: 'https://app.mindflowspeedreading.com/business-discount'
       });
-      
+
     },
     {
       onSuccess: () => {
@@ -151,7 +147,7 @@ export const BusinessDiscount: FC = () => {
         <BusinessLeadForm
           isLoading={handleCreateCreditCardOrderMutation.isLoading}
           onSubmit={stripePublicKey ? handleCreateStripeOrderMutation.mutate : handleCreateCreditCardOrderMutation.mutate}
-          />
+        />
       </Modal>
       <BasePage maxWidth="1660px" margin="0 auto" background="white" spacing="md">
         <BasePageTitle

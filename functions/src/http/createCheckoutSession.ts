@@ -2,8 +2,6 @@
 import { Request, Response } from 'express';
 import * as functions from 'firebase-functions';
 
-const cors = require('cors')({origin: true});
-
 const methodName = 'createCheckoutSession';
 
 export const createCheckoutSession = async (request: Request, response: Response) => {
@@ -13,37 +11,37 @@ export const createCheckoutSession = async (request: Request, response: Response
   }
 
   try {
-    const { amount, quantity , success_url, cancel_url} = request.body;
+    const { amount, quantity, success_url, cancel_url } = request.body;
     functions.logger.log(`[${methodName}] request: `, {
-        amount,
-        quantity
-      });
-      
+      amount,
+      quantity
+    });
+
     const stripe = require("stripe")(functions.config().stripe.secret_key);
 
     const amountCent = amount * 100;
     const session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
-        mode: 'payment',
-        line_items: [
-          {
-            price_data: {
-              currency: 'usd',
-              product_data: {
-                name: 'Custom Product',
-              },
-              unit_amount: amountCent,
+      payment_method_types: ['card'],
+      mode: 'payment',
+      line_items: [
+        {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: 'Custom Product',
             },
-            quantity: quantity,
+            unit_amount: amountCent,
           },
-        ],
-        cancel_url: cancel_url,
-        success_url: success_url
-      });
-      functions.logger.log('BOBA session', session);
+          quantity: quantity,
+        },
+      ],
+      cancel_url: cancel_url,
+      success_url: success_url
+    });
+    functions.logger.log('BOBA session', session);
 
-      response.json({ id: session.id });
-    
+    response.json({ id: session.id });
+
   } catch (error) {
     functions.logger.error('[stripeRedirect] Critical error : ', error);
 

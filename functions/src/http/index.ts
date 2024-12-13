@@ -57,7 +57,6 @@ app.post('/createBusinessApproval', createBusinessApproval);
 app.put('/approveBusiness', approveBusiness);
 app.post('/sendLicenseOrderReceipt', sendLicenseOrderReceipt);
 app.post('/sendFeedback', sendFeedback);
-
 app.post('/createCheckoutSession', createCheckoutSession);
 
 // app.get('/syncFeedAndTestResults', async (req, res) => {
