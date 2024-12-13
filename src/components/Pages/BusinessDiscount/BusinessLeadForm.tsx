@@ -15,7 +15,7 @@ import { CreateOrderActions, OnApproveActions, OnApproveData } from '@paypal/pay
 import { PayPalButtons } from '@paypal/react-paypal-js';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router';
-import Axios from 'axios';
+import axios from 'axios';
 import Joi from 'joi';
 import ReactInputMask from 'react-input-mask';
 
@@ -143,7 +143,7 @@ export const BusinessLeadForm: FC<Props> = ({ isLoading, onSubmit }) => {
     const values = result.value as BusinessAprovalSubmit;
 
     const orderDetails = await actions.order.capture();
-    const businessApprovalResponse = await Axios.post(
+    const businessApprovalResponse = await axios.post(
       `${process.env.REACT_APP_CLOUD_FUNCTIONS_URL}/createBusinessApproval`,
       values
     );
@@ -253,7 +253,7 @@ export const BusinessLeadForm: FC<Props> = ({ isLoading, onSubmit }) => {
                 gap="md"
                 textAlign="center"
               >
-                { stripePublicKey ? (
+                {stripePublicKey ? (
                   <>
                     <ChakraButton
                       size="xs"
@@ -266,7 +266,7 @@ export const BusinessLeadForm: FC<Props> = ({ isLoading, onSubmit }) => {
                       Buy now
                     </ChakraButton>
                   </>
-                
+
                 ) : (
                   <>
                     <PayPalButtons
@@ -278,7 +278,7 @@ export const BusinessLeadForm: FC<Props> = ({ isLoading, onSubmit }) => {
                     <ChakraText fontSize="md" marginY="none">
                       OR
                     </ChakraText>
-                    
+
                     <ChakraButton
                       size="xs"
                       width="100%"
@@ -291,7 +291,7 @@ export const BusinessLeadForm: FC<Props> = ({ isLoading, onSubmit }) => {
                     </ChakraButton>
                   </>
                 )}
-               
+
               </ChakraGrid>
             )}
           </ChakraFlex>

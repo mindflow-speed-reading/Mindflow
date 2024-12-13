@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { toast } from 'react-toastify';
 import { useMutation } from 'react-query';
-import Axios from 'axios';
+import axios from 'axios';
 
 import { PublicLayout } from 'layouts/Public';
 
@@ -20,7 +20,6 @@ import { ImageGallery, Modal } from 'components/common';
 import { SpeedReadPricingCard } from 'components/Pages/PublicSpeedRead';
 
 import { loadStripe } from '@stripe/stripe-js';
-import axios from 'axios';
 
 const pricingCard = {
   title: 'For business owners',
@@ -62,7 +61,7 @@ export const BusinessDiscount: FC = () => {
     async (body: BusinessAprovalSubmit) => {
       setIsLoading(true);
 
-      const resp = await Axios.post(`${process.env.REACT_APP_CLOUD_FUNCTIONS_URL}/createBusinessApproval`, body);
+      const resp = await axios.post(`${process.env.REACT_APP_CLOUD_FUNCTIONS_URL}/createBusinessApproval`, body);
 
       const { id } = resp.data;
 
