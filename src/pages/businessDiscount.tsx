@@ -109,7 +109,7 @@ export const BusinessDiscount: FC = () => {
       setIsLoading(true);
 
 
-      const resp = await Axios.post(`${process.env.REACT_APP_CLOUD_FUNCTIONS_URL}/createBusinessApproval`, body);
+      const resp = await axios.post(`${process.env.REACT_APP_CLOUD_FUNCTIONS_URL}/createBusinessApproval`, body);
 
       const { id } = resp.data;
 
